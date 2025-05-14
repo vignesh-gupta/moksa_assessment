@@ -1,0 +1,12 @@
+{
+  "name": "@moksa_asses/utils",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "devDependencies": {
+    "@moksa_asses/eslint-config": "workspace:*",
+    "@moksa_asses/typescript-config": "workspace:*"
+  }
+}
