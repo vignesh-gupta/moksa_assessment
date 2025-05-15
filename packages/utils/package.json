@@ -8,5 +8,8 @@
   "devDependencies": {
     "@moksa_asses/eslint-config": "workspace:*",
     "@moksa_asses/typescript-config": "workspace:*"
+  },
+  "dependencies": {
+    "zod": "^3.24.4"
   }
 }
