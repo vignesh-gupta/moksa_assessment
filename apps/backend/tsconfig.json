@@ -1,7 +1,7 @@
 {
+  "extends": "@moksa_asses/typescript-config/base.json",
   "compilerOptions": {
     "target": "es2020",
-    "module": "commonjs",
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,

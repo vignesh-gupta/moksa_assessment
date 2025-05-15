@@ -1,4 +1,7 @@
 import { Kafka } from "kafkajs";
+
+import { rawEventDataSchema } from "@moksa_asses/utils";
+
 import { CustomerEvent } from "../models/CustomerEvent";
 import { sendEventToClients } from "../services/sse";
 import { convertKafkaTimestampToDate } from "../utils";
@@ -18,20 +21,24 @@ export const consumeKafka = async () => {
     fromBeginning: false,
   });
   console.log("Subscribed to topic:", process.env.KAFKA_TOPIC);
-  
+
   await consumer.run({
     eachMessage: async ({ message }) => {
       try {
         const value = message.value?.toString();
 
         if (value) {
-          const parsed = JSON.parse(value);
+          const { success, data, error } = rawEventDataSchema.safeParse(
+            JSON.parse(value)
+          );
+
+          if (!success) {
+            console.error("Invalid message format:", error);
+            return;
+          }
           const event = new CustomerEvent({
-            store_id: parsed.store_id,
-            customers_in: parsed.customers_in,
-            customers_out: parsed.customers_out,
-            time_stamp: parsed.time_stamp,
-            date_time_stamp: convertKafkaTimestampToDate(parsed.time_stamp),
+            ...data,
+            date_time_stamp: convertKafkaTimestampToDate(data.time_stamp),
           });
           await event.save();
           sendEventToClients(event);

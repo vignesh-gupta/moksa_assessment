@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+export const rawEventDataSchema = z.object({
+  store_id: z.number(),
+  customers_in: z.number(),
+  customers_out: z.number(),
+  time_stamp: z.string(),
+});
+
 export const eventDataSchema = z.object({
   store_id: z.number(),
   customers_in: z.number(),
