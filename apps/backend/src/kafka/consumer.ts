@@ -10,18 +10,15 @@ const kafka = new Kafka({
 const consumer = kafka.consumer({ groupId: "dashboard-group" });
 
 export const consumeKafka = async () => {
-  console.log("Connecting to Kafka...");
-
   await consumer.connect();
-
   console.log("Connected to Kafka");
-  console.log("Subscribing to topic:", process.env.KAFKA_TOPIC);
+
   await consumer.subscribe({
     topic: process.env.KAFKA_TOPIC!,
     fromBeginning: false,
   });
-
   console.log("Subscribed to topic:", process.env.KAFKA_TOPIC);
+  
   await consumer.run({
     eachMessage: async ({ message }) => {
       try {

@@ -1,7 +1,17 @@
 import { EventData, eventDataSchema } from "@moksa_asses/utils";
 import { useEffect, useState } from "react";
 
-export const useEventStream = (url: string, limit: number = 10) => {
+type EventStreamProp = {
+  url: string;
+  limit?: number;
+  onMessage?: (data: EventData) => void;
+};
+
+export const useEventStream = ({
+  url,
+  limit = 10,
+  onMessage,
+}: EventStreamProp) => {
   const [events, setEvents] = useState<EventData[]>([]);
 
   useEffect(() => {
@@ -14,31 +24,15 @@ export const useEventStream = (url: string, limit: number = 10) => {
 
     eventSource.addEventListener("update", (event) => {
       const eventData = JSON.parse(event.data);
-
-      console.log("Received event data:", eventData);
       const { success, data, error } = eventDataSchema.safeParse(eventData);
       if (!success) {
         console.error("Invalid event data:", error);
         return;
       }
-      console.log("Live update:", {
-        data,
-        bool: events.length >= limit,
-        limit,
-        len: events.length,
-        events,
-      });
-      if (events.length >= limit) {
-        console.log("Event limit reached, removing oldest event", {
-          length: events.length,
-          limit,
-          events,
-        });
-
+      onMessage?.(data);
+      if (events.length >= limit)
         setEvents((prevEvents) => [...prevEvents.slice(1), data]);
-      } else {
-        setEvents((prevEvents) => [...prevEvents, data]);
-      }
+      else setEvents((prevEvents) => [...prevEvents, data]);
     });
 
     return () => {
@@ -47,8 +41,7 @@ export const useEventStream = (url: string, limit: number = 10) => {
         console.log("Disconnected from SSE stream");
       });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [limit, url, events.length]);
+  }, [limit, url, events.length, onMessage]);
 
   return { events };
 };

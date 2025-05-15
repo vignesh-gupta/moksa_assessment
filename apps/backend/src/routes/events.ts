@@ -47,7 +47,19 @@ router.get("/history", async (req, res) => {
     },
     {
       $project: {
-        _id: 0,
+        _id: {
+          $concat: [
+            "store_",
+            { $toString: "$_id.store_id" },
+            "_",
+            {
+              $dateToString: {
+                format: "%Y-%m-%dT%H:00:00Z",
+                date: "$_id.hour_start",
+              },
+            },
+          ],
+        },
         store_id: "$_id.store_id",
         hour_start: "$_id.hour_start",
         total_customers_in: 1,

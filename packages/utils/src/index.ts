@@ -9,5 +9,13 @@ export const eventDataSchema = z.object({
   _id: z.string(),
 });
 
-
 export type EventData = z.infer<typeof eventDataSchema>;
+
+export const customerHistoryDataSchema = z.object({
+  store_id: z.number(),
+  total_customers_in: z.number(),
+  total_customers_out: z.number(),
+  hour_start: z.string().datetime(),
+});
+
+export type CustomerHistoryData = z.infer<typeof customerHistoryDataSchema>;

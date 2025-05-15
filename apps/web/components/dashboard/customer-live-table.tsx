@@ -19,10 +19,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useEventStream } from "@/hooks/use-event-stream";
+import { useLiveCustomerData } from "@/hooks/use-live-customer-data";
 
 const CustomerLiveTable = () => {
-  const { events } = useEventStream("http://localhost:5000/api/stream")
+  const { events } = useLiveCustomerData();
 
   return (
     <Card className="max-w-xl mx-auto mt-20">
@@ -55,30 +55,38 @@ const CustomerLiveTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {events.map((row) => {
-              return (
-                <TableRow key={row._id}>
-                  <TableCell className="font-medium">
-                    Store {row.store_id}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      {row.customers_in}
-                      <ArrowDownUp className="h-4 w-4 text-green-500" />
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      {row.customers_out}
-                      <ArrowDownUp className="h-4 w-4 text-red-500" />
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {format(new Date(row.date_time_stamp), "HH:mm:ss")}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            {events.length > 0 ? (
+              events.map((row) => {
+                return (
+                  <TableRow key={row._id}>
+                    <TableCell className="font-medium">
+                      Store {row.store_id}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        {row.customers_in}
+                        <ArrowDownUp className="h-4 w-4 text-green-500" />
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        {row.customers_out}
+                        <ArrowDownUp className="h-4 w-4 text-red-500" />
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {format(new Date(row.date_time_stamp), "HH:mm:ss")}
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4} className="text-center">
+                  No live data available
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </CardContent>
