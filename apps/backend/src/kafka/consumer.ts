@@ -1,6 +1,7 @@
 import { Kafka } from "kafkajs";
 import { CustomerEvent } from "../models/CustomerEvent";
 import { sendEventToClients } from "../services/sse";
+import { convertKafkaTimestampToDate } from "../utils";
 
 const kafka = new Kafka({
   brokers: [process.env.KAFKA_BROKER!],
@@ -28,12 +29,12 @@ export const consumeKafka = async () => {
 
         if (value) {
           const parsed = JSON.parse(value);
-
           const event = new CustomerEvent({
             store_id: parsed.store_id,
             customers_in: parsed.customers_in,
             customers_out: parsed.customers_out,
             time_stamp: parsed.time_stamp,
+            date_time_stamp: convertKafkaTimestampToDate(parsed.time_stamp),
           });
           await event.save();
           sendEventToClients(event);
