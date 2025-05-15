@@ -2,6 +2,35 @@
 
 This is a monorepo project structured with [Turborepo](https://turborepo.com/), containing full-stack applications and shared packages for rapid development and deployment.
 
+## Problem Statement:
+
+```
+This coding challenge is for you to demonstrate your frontend and backend skills
+Frontend: React, TypeScript, Next.js
+Backend: node.js, Express.js, TypeScript
+Feel free to use any other technologies you want to use on top of the technologies mentioned
+above.
+As a part of this coding challenge, you will build a dashboard for number of customers coming in
+and out of the store, you will get the customers info from kafka
+Sample messages from kafka
+{store_id: 10, customers_in: 2, customers_out:3, time_stamp:10.12.03}
+{store_id: 10, customers_in: 0, customers_out:1, time_stamp:10.13.15}
+{store_id: 10, customers_in: 2, customers_out:0, time_stamp:10.15.12}
+The messages are generated only when a customer walks in or out of the store
+The dashboard should have two tables
+Live and History table
+For live table, you will show the customers coming in and out of the store in real time
+For the History Table, you will show the customers coming in and out of the store per hour for
+the last 24 hrs.
+You don't have to make the website pretty. Please share the GitHub monorepo link when done.
+```
+
+## Solution
+
+- Used Event Sourcing to handle the incoming messages from Kafka.
+- Server Side Event for the live table to push updates to the frontend in real-time.
+- Mongo Time series collection to store the history of the customers coming in and out of the store.
+
 ## Table of Contents
 
 - [What's Inside?](#whats-inside)
