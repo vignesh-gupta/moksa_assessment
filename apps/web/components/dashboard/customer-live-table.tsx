@@ -2,7 +2,6 @@
 
 import React from "react";
 import { format } from "date-fns";
-import { ArrowDownUp, ArrowUpDown } from "lucide-react";
 
 import {
   Card,
@@ -40,16 +39,10 @@ const CustomerLiveTable = () => {
             <TableRow>
               <TableHead>Store ID</TableHead>
               <TableHead>
-                <div className="flex items-center gap-1">
-                  Customers In
-                  <ArrowUpDown className="h-4 w-4" />
-                </div>
+                <div className="flex items-center gap-1">Customers In</div>
               </TableHead>
               <TableHead>
-                <div className="flex items-center gap-1">
-                  Customers Out
-                  <ArrowUpDown className="h-4 w-4" />
-                </div>
+                <div className="flex items-center gap-1">Customers Out</div>
               </TableHead>
               <TableHead>Timestamp</TableHead>
             </TableRow>
@@ -65,13 +58,11 @@ const CustomerLiveTable = () => {
                     <TableCell>
                       <div className="flex items-center gap-1">
                         {row.customers_in}
-                        <ArrowDownUp className="h-4 w-4 text-green-500" />
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
                         {row.customers_out}
-                        <ArrowDownUp className="h-4 w-4 text-red-500" />
                       </div>
                     </TableCell>
                     <TableCell className="text-muted-foreground">
